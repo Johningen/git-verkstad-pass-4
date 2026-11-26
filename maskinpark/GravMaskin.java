@@ -1,19 +1,17 @@
 package se.fjax26.maskinpark;
 
-import java.time.LocalDateTime;
-
-public class Gravmaskin extends Anlaggningsmaskin {
+public class GravMaskin extends Anlaggningsmaskin {
 
     private double skopVolymKbm;
     private double hydraulTryckBar;
-    private String grävArmTyp; // Code smell: Primitive Obsession ("STANDARD", "TELESKOP", "LONG_REACH")
+    private GrävArmTyp grävArmTyp;
     private int skopSlitageProcent;
 
-    public Gravmaskin(String id, String modell, double timKostnad, double skopVolymKbm) {
+    public GravMaskin(String id, String modell, double timKostnad, double skopVolymKbm) {
         super(id, modell, timKostnad);
         this.skopVolymKbm = skopVolymKbm;
         this.hydraulTryckBar = 210.0;
-        this.grävArmTyp = "STANDARD";
+        this.grävArmTyp = GrävArmTyp.STANDARD;
         this.skopSlitageProcent = 15;
     }
 
@@ -49,9 +47,9 @@ public class Gravmaskin extends Anlaggningsmaskin {
                         }
 
                         double kostnad = timmar * getTimKostnad();
-                        if (grävArmTyp.equals("LONG_REACH")) {
+                        if (grävArmTyp == GrävArmTyp.LONG_REACH) {
                             kostnad += timmar * 150.0; // Magic number
-                        } else if (grävArmTyp.equals("TELESKOP")) {
+                        } else if (grävArmTyp == GrävArmTyp.TELESKOP) {
                             kostnad += timmar * 85.0; // Magic number
                         }
 
@@ -100,8 +98,8 @@ public class Gravmaskin extends Anlaggningsmaskin {
     public void setSkopVolymKbm(double skopVolymKbm) { this.skopVolymKbm = skopVolymKbm; }
     public double getHydraulTryckBar() { return hydraulTryckBar; }
     public void setHydraulTryckBar(double hydraulTryckBar) { this.hydraulTryckBar = hydraulTryckBar; }
-    public String getGrävArmTyp() { return grävArmTyp; }
-    public void setGrävArmTyp(String grävArmTyp) { this.grävArmTyp = grävArmTyp; }
+    public GrävArmTyp getGrävArmTyp() { return grävArmTyp; }
+    public void setGrävArmTyp(GrävArmTyp grävArmTyp) { this.grävArmTyp = grävArmTyp; }
     public int getSkopSlitageProcent() { return skopSlitageProcent; }
     public void setSkopSlitageProcent(int skopSlitageProcent) { this.skopSlitageProcent = skopSlitageProcent; }
 }

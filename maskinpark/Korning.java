@@ -7,18 +7,18 @@ public class Korning {
     private String korningId;
     private Anlaggningsmaskin maskin;
     private String forarNamn;
-    private String forarKorkortKlass; // Code smell: Primitive Obsession ("CE", "C", "TRAKTOR")
+    private ForarKorKortKlass forarKorKortKlass;
     private double timmar;
     private String terrang;
     private LocalDateTime startTid;
     private boolean kvallsPass;
     private String rabattKod;
 
-    public Korning(String korningId, Anlaggningsmaskin maskin, String forarNamn, String forarKorkortKlass, double timmar, String terrang, boolean kvallsPass) {
+    public Korning(String korningId, Anlaggningsmaskin maskin, String forarNamn, ForarKorKortKlass forarKorKortKlass, double timmar, String terrang, boolean kvallsPass) {
         this.korningId = korningId;
         this.maskin = maskin;
         this.forarNamn = forarNamn;
-        this.forarKorkortKlass = forarKorkortKlass;
+        this.forarKorKortKlass = forarKorKortKlass;
         this.timmar = timmar;
         this.terrang = terrang;
         this.startTid = LocalDateTime.now();
@@ -32,13 +32,13 @@ public class Korning {
 
         // Code smell: Typ-kontroll med instanceof istället för polymorfi!
         if (maskin != null) {
-            if (maskin instanceof Gravmaskin) {
-                Gravmaskin g = (Gravmaskin) maskin;
+            if (maskin instanceof GravMaskin) {
+                GravMaskin g = (GravMaskin) maskin;
                 basPris = timmar * g.getTimKostnad();
                 if (g.getSkopVolymKbm() > 2.5) {
                     basPris += timmar * 75.0; // Magic number
                 }
-                if (g.getGrävArmTyp().equals("LONG_REACH")) {
+                if (g.getGrävArmTyp() == GrävArmTyp.LONG_REACH) {
                     basPris += 500.0; // Magic number
                 }
             } else if (maskin instanceof Valt) {
@@ -118,7 +118,7 @@ public class Korning {
     public String getKorningId() { return korningId; }
     public Anlaggningsmaskin getMaskin() { return maskin; }
     public String getForarNamn() { return forarNamn; }
-    public String getForarKorkortKlass() { return forarKorkortKlass; }
+    public ForarKorKortKlass getForarKorKortKlass() { return forarKorKortKlass; }
     public double getTimmar() { return timmar; }
     public String getTerrang() { return terrang; }
     public LocalDateTime getStartTid() { return startTid; }
