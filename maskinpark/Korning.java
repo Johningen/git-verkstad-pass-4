@@ -13,6 +13,12 @@ public class Korning {
     private LocalDateTime startTid;
     private boolean kvallsPass;
     private String rabattKod;
+    private static final double MOMS = 1.25;
+    private static final double OB_KVALL = 1.25;
+    private static final double OB_HELG = 1.30;
+    private static final double OB_KVALL_OCH_HELG = 1.50;
+    private static final double GRAV_STOR_SKOPA_GRANS = 2.5;
+    private static final double GRAV_STOR_SKOPA_TILLAGG_PER_TIMME = 75.0;
 
     public Korning(String korningId, Anlaggningsmaskin maskin, String forarNamn, String forarKorkortKlass, double timmar, String terrang, boolean kvallsPass) {
         this.korningId = korningId;
@@ -35,8 +41,8 @@ public class Korning {
             if (maskin instanceof Gravmaskin) {
                 Gravmaskin g = (Gravmaskin) maskin;
                 basPris = timmar * g.getTimKostnad();
-                if (g.getSkopVolymKbm() > 2.5) {
-                    basPris += timmar * 75.0; // Magic number
+                if (g.getSkopVolymKbm() > GRAV_STOR_SKOPA_GRANS) {
+                    basPris += timmar * GRAV_STOR_SKOPA_TILLAGG_PER_TIMME; // Magic number
                 }
                 if (g.getGrävArmTyp().equals("LONG_REACH")) {
                     basPris += 500.0; // Magic number
@@ -78,13 +84,13 @@ public class Korning {
         // Tillägg för kväll och helg (Arrow Anti-Pattern)
         if (kvallsPass) {
             if (arHelg) {
-                basPris *= 1.50; // 50% helg+kvälls OB
+                basPris *= OB_KVALL_OCH_HELG; // 50% helg+kvälls OB
             } else {
-                basPris *= 1.25; // 25% kvälls OB
+                basPris *= OB_KVALL; // 25% kvälls OB
             }
         } else {
             if (arHelg) {
-                basPris *= 1.30; // 30% helg OB
+                basPris *= OB_HELG; // 30% helg OB
             }
         }
 
@@ -108,7 +114,7 @@ public class Korning {
 
         // Momsberäkning
         if (inkluderaMoms) {
-            basPris *= 1.25; // 25% moms
+            basPris *= MOMS; // 25% moms
         }
 
         return Math.max(0, basPris);
