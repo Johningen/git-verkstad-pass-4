@@ -1,5 +1,9 @@
 package se.fjax26.maskinpark;
 
+import se.fjax26.maskinpark.records.Tillagg;
+
+import java.util.List;
+
 public class Lastbil extends Anlaggningsmaskin {
 
     private double lasteKapacitetTon;
@@ -27,9 +31,27 @@ public class Lastbil extends Anlaggningsmaskin {
         return "TRANSPORT FULLFÖRD: " + getId() + " kört " + strackaKm + " km med " + lastViktTon + " ton last. Förbrukning: " + String.format("%.1f", totalBransle) + "L.";
     }
 
-    // Getters och Setters
-    public double getLasteKapacitetTon() { return lasteKapacitetTon; }
-    public int getAntalAxlar() { return antalAxlar; }
-    public boolean isHarSlap() { return harSlap; }
-    public void setHarSlap(boolean harSlap) { this.harSlap = harSlap; }
+    public double getLasteKapacitetTon() {
+        return lasteKapacitetTon;
+    }
+
+    public int getAntalAxlar() {
+        return antalAxlar;
+    }
+
+    public boolean isHarSlap() {
+        return harSlap;
+    }
+
+    public void setHarSlap(boolean harSlap) {
+        this.harSlap = harSlap;
+    }
+
+    @Override
+    protected List<Tillagg> tillagg() {
+        return List.of(
+                Tillagg.perTimme(isHarSlap(), 120.0),
+                Tillagg.fast(getAntalAxlar() >= 4, 250.0)
+        );
+    }
 }

@@ -1,5 +1,9 @@
 package se.fjax26.maskinpark;
 
+import se.fjax26.maskinpark.records.Tillagg;
+
+import java.util.List;
+
 public class Valt extends Anlaggningsmaskin {
 
     private double viktITon;
@@ -32,7 +36,26 @@ public class Valt extends Anlaggningsmaskin {
     }
 
     // Getters och Setters
-    public double getViktITon() { return viktITon; }
-    public double getTrummBreddMeter() { return trummBreddMeter; }
-    public boolean isVibrationsLägeAktivt() { return vibrationsLägeAktivt; }
+    public double getViktITon() {
+        return viktITon;
+    }
+
+    public double getTrummBreddMeter() {
+        return trummBreddMeter;
+    }
+
+    public boolean isVibrationsLägeAktivt() {
+        return vibrationsLägeAktivt;
+    }
+
+
+    @Override
+    protected List<Tillagg> tillagg() {
+        return List.of(
+                Tillagg.perTimme(isVibrationsLägeAktivt(), 45.0),
+                Tillagg.fast(getViktITon() > 10.0, 300.0)
+        );
+    }
+
+
 }

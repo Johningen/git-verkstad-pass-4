@@ -1,5 +1,9 @@
 package se.fjax26.maskinpark;
 
+import se.fjax26.maskinpark.records.Tillagg;
+
+import java.util.List;
+
 public abstract class Anlaggningsmaskin {
 
     private String id;
@@ -18,6 +22,16 @@ public abstract class Anlaggningsmaskin {
         this.status = "REDO";
     }
 
+    protected abstract List<Tillagg> tillagg();
+
+    public double beraknaBasPris(double timmar) {
+        double tillaggsKostnad = tillagg().stream()
+                .filter(Tillagg::galler)
+                .mapToDouble(t -> t.kostnad(timmar))
+                .sum();
+        return timmar * timKostnad + tillaggsKostnad;
+    }
+
     public void tanka(double liter) {
         this.bransleNiva = Math.min(200.0, this.bransleNiva + liter);
         if (this.bransleNiva > 20.0 && this.status.equals("BRÄNSLE_LÅGT")) {
@@ -26,16 +40,45 @@ public abstract class Anlaggningsmaskin {
     }
 
     // Getters och Setters
-    public String getId() { return id; }
-    public String getModell() { return modell; }
-    public double getTimKostnad() { return timKostnad; }
-    public void setTimKostnad(double timKostnad) { this.timKostnad = timKostnad; }
-    public double getDrifttimmar() { return drifttimmar; }
-    protected void setDrifttimmar(double drifttimmar) { this.drifttimmar = drifttimmar; }
-    public double getBransleNiva() { return bransleNiva; }
-    protected void setBransleNiva(double bransleNiva) { this.bransleNiva = bransleNiva; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getId() {
+        return id;
+    }
+
+    public String getModell() {
+        return modell;
+    }
+
+    public double getTimKostnad() {
+        return timKostnad;
+    }
+
+    public void setTimKostnad(double timKostnad) {
+        this.timKostnad = timKostnad;
+    }
+
+    public double getDrifttimmar() {
+        return drifttimmar;
+    }
+
+    protected void setDrifttimmar(double drifttimmar) {
+        this.drifttimmar = drifttimmar;
+    }
+
+    public double getBransleNiva() {
+        return bransleNiva;
+    }
+
+    protected void setBransleNiva(double bransleNiva) {
+        this.bransleNiva = bransleNiva;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {

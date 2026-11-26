@@ -1,6 +1,9 @@
 package se.fjax26.maskinpark;
 
+import se.fjax26.maskinpark.records.Tillagg;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Gravmaskin extends Anlaggningsmaskin {
 
@@ -96,12 +99,44 @@ public class Gravmaskin extends Anlaggningsmaskin {
     }
 
     // Getters och Setters
-    public double getSkopVolymKbm() { return skopVolymKbm; }
-    public void setSkopVolymKbm(double skopVolymKbm) { this.skopVolymKbm = skopVolymKbm; }
-    public double getHydraulTryckBar() { return hydraulTryckBar; }
-    public void setHydraulTryckBar(double hydraulTryckBar) { this.hydraulTryckBar = hydraulTryckBar; }
-    public String getGrävArmTyp() { return grävArmTyp; }
-    public void setGrävArmTyp(String grävArmTyp) { this.grävArmTyp = grävArmTyp; }
-    public int getSkopSlitageProcent() { return skopSlitageProcent; }
-    public void setSkopSlitageProcent(int skopSlitageProcent) { this.skopSlitageProcent = skopSlitageProcent; }
+    public double getSkopVolymKbm() {
+        return skopVolymKbm;
+    }
+
+    public void setSkopVolymKbm(double skopVolymKbm) {
+        this.skopVolymKbm = skopVolymKbm;
+    }
+
+    public double getHydraulTryckBar() {
+        return hydraulTryckBar;
+    }
+
+    public void setHydraulTryckBar(double hydraulTryckBar) {
+        this.hydraulTryckBar = hydraulTryckBar;
+    }
+
+    public String getGrävArmTyp() {
+        return grävArmTyp;
+    }
+
+    public void setGrävArmTyp(String grävArmTyp) {
+        this.grävArmTyp = grävArmTyp;
+    }
+
+    public int getSkopSlitageProcent() {
+        return skopSlitageProcent;
+    }
+
+    public void setSkopSlitageProcent(int skopSlitageProcent) {
+        this.skopSlitageProcent = skopSlitageProcent;
+    }
+
+    @Override
+    protected List<Tillagg> tillagg() {
+        return List.of(
+                Tillagg.perTimme(getSkopVolymKbm() > 2.5, 75.0),
+                Tillagg.fast("LONG_REACH".equals(getGrävArmTyp()), 500.0)
+        );
+    }
+
 }

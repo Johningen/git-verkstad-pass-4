@@ -33,15 +33,19 @@ public class MaskinPark {
     }
 
     public void skrivUtAllaKorningar() {
-        System.out.println("
-=== KÖRNINGSRAPPORT (" + korningar.size() + " körpass) ===");
+        System.out.println(" === KÖRNINGSRAPPORT (" + korningar.size() + " körpass) ===");
         for (Korning k : korningar) {
-            double slutPris = k.beraknaSlutprisOchGenereraRapport(true, false);
+            double slutPris = k.beraknaSlutpris(true, false);
             System.out.println(String.format(" • [%s] Förare: %s | Maskin: %s (%s) | Tid: %.1fh | Slutpris (inkl moms): %.2f kr",
                     k.getKorningId(), k.getForarNamn(), k.getMaskin().getId(), k.getMaskin().getModell(), k.getTimmar(), slutPris));
         }
     }
 
-    public List<Anlaggningsmaskin> getMaskiner() { return maskiner; }
-    public List<Korning> getKorningar() { return korningar; }
+    public List<Anlaggningsmaskin> getMaskiner() {
+        return maskiner;
+    }
+
+    public List<Korning> getKorningar() {
+        return korningar;
+    }
 }

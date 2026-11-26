@@ -1,5 +1,9 @@
 package se.fjax26.maskinpark;
 
+import se.fjax26.maskinpark.records.Tillagg;
+
+import java.util.List;
+
 public class Hjullastare extends Anlaggningsmaskin {
 
     private double skopVolymKbm;
@@ -35,7 +39,23 @@ public class Hjullastare extends Anlaggningsmaskin {
     }
 
     // Getters och Setters
-    public double getSkopVolymKbm() { return skopVolymKbm; }
-    public double getMaxLyftKapacitetTon() { return maxLyftKapacitetTon; }
-    public boolean isHarGafflarMonterade() { return harGafflarMonterade; }
+    public double getSkopVolymKbm() {
+        return skopVolymKbm;
+    }
+
+    public double getMaxLyftKapacitetTon() {
+        return maxLyftKapacitetTon;
+    }
+
+    public boolean isHarGafflarMonterade() {
+        return harGafflarMonterade;
+    }
+
+    @Override
+    protected List<Tillagg> tillagg() {
+        return List.of(
+                Tillagg.perTimme(isHarGafflarMonterade(), 30.0),
+                Tillagg.perTimme(getSkopVolymKbm() > 3.0, 60.0)
+        );
+    }
 }
