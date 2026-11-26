@@ -5,7 +5,7 @@ import se.fjax26.maskinpark.enums.Rabatt;
 import se.fjax26.maskinpark.enums.Terrang;
 
 import java.time.LocalDateTime;
-
+//här är det ändrat
 public class Korning {
 
     private static final double KVALL_OB = 1.25;
